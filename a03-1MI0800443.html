@@ -1,0 +1,377 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Музей</title>
+    <style>
+        body { margin: 0; }
+		canvas { width: 100%; height: 100% }
+    </style>
+	<script type="importmap">
+			{ "imports": {
+				"three": "https://cdn.jsdelivr.net/npm/three@0.164.0/build/three.module.js"
+			} }
+		</script>
+</head>
+<body>
+    <script type="module">
+			//curkvite sushto moje da sa muzei :')
+			import * as THREE from "three";
+			
+			var renderer = new THREE.WebGLRenderer();
+			renderer.setSize( window.innerWidth, window.innerHeight );
+			
+			document.body.appendChild( renderer.domElement );
+
+			var scene = new THREE.Scene();
+			scene.background = new THREE.Color('#a0d8f3');
+			
+			var aspect = window.innerWidth/window.innerHeight;
+			var camera = new THREE.PerspectiveCamera( 60, aspect );
+			camera.position.set( 0, 5, 20 );
+			camera.lookAt( scene.position );
+			
+			
+			//treva
+			var geometry = new THREE.BoxGeometry( 65, 12, 5 );
+			var material = new THREE.MeshBasicMaterial({ color: '#00e600' });
+			var base = new THREE.Mesh( geometry, material );
+			base.position.set(0, -12, -3)
+			scene.add( base );
+			
+			//sgrada
+			var building=new THREE.Group();
+			scene.add(building);
+			//kuli
+			var geometry = new THREE.BoxGeometry(4,15,4);
+			var material = new THREE.MeshLambertMaterial({color:'#cc99ff'});
+			
+			
+			for(var i=0;i<2;i++){
+			var kula = new THREE.Mesh(geometry,material);
+			kula.position.set(-8+i*15, -3, -2)
+			building.add(kula);
+			}
+			//side things
+			var geometrySide = new THREE.BoxGeometry(0.5,14.9,0.5);
+			var materialSide = new THREE.MeshLambertMaterial({color:'#ffffff'});
+			
+			
+			for(var i=0;i<2;i++){
+			var side = new THREE.Mesh(geometrySide,materialSide);
+			side.position.set(-10+i*4, -3, -0.2)
+			building.add(side);
+			}
+			for(var i=0;i<2;i++){
+			var side = new THREE.Mesh(geometrySide,materialSide);
+			side.position.set(5+i*4, -3, -0.2)
+			building.add(side);
+			}
+			//pokriv
+			var geometryR = new THREE.CylinderGeometry(0,2.5,7,4,1);
+			var materialR = new THREE.MeshPhongMaterial({color:'black'});
+				
+				for(var i=0;i<2;i++){
+				var roof = new THREE.Mesh(geometryR,materialR);
+				//roof.position.set(-5, 17, -2);
+				roof.position.set(-8+i*15,6.5,-2);
+				roof.rotateY(Math.PI/4);
+				building.add(roof);
+				}
+				
+			var geometryU = new THREE.CylinderGeometry(0,3,2,4,1);
+			var materialU = new THREE.MeshPhongMaterial({color:'ff9999'});
+				
+				for(var i=0;i<2;i++){
+				var ukraski = new THREE.Mesh(geometryU,materialU);
+				ukraski.position.set(-7.8+i*14.8,5.5,-2);
+				ukraski.rotateY(Math.PI/4);
+				building.add(ukraski);
+				}	
+				
+				//krust
+			var geometrykrust = new THREE.BoxGeometry(0.15,1,0.15);
+			var materialkrust = new THREE.MeshPhongMaterial({color:'white'});
+			
+				
+				for(var i=0;i<2;i++){
+				var krust = new THREE.Mesh(geometrykrust,materialkrust);
+				var krust2 = new THREE.Mesh(geometrykrust,materialkrust);
+				krust.position.set(-8+i*15,10.2,-2);
+				krust2.position.set(-8+i*15,10.4,-2);
+				krust2.rotateZ(Math.PI/2);
+				building.add(krust,krust2);
+				}
+				//prozorci
+			var geometrypr = new THREE.BoxGeometry(2,5,0.1);
+			var geometrypr3 = new THREE.CircleGeometry(1.2,3);
+			var materialpr = new THREE.MeshBasicMaterial({color:'lightgray'});
+			
+			for(var i=0;i<2;i++){
+				var pr = new THREE.Mesh(geometrypr,materialpr);
+				var pr3 = new THREE.Mesh(geometrypr3,materialpr);
+				pr.position.set(-7.8+i*14.8,-1,0.2);
+				pr3.position.set(-7.8+i*14.8,2,0.2);
+				pr3.rotateZ(Math.PI/2);
+				building.add(pr);
+				building.add(pr3);
+				}
+				
+				var geometrypr = new THREE.BoxGeometry(2.2,5.2,0.1);
+			var geometrypr3 = new THREE.CircleGeometry(1.35,3);
+			var materialpr = new THREE.MeshBasicMaterial({color:'black'});
+			
+			for(var i=0;i<2;i++){
+				var pr = new THREE.Mesh(geometrypr,materialpr);
+				var pr3 = new THREE.Mesh(geometrypr3,materialpr);
+				pr.position.set(-7.8+i*14.8,-1,0);
+				pr3.position.set(-7.8+i*14.8,2.2,0);
+				pr3.rotateZ(Math.PI/2);
+				building.add(pr);
+				building.add(pr3);
+				}
+			
+			var geometryramka = new THREE.BoxGeometry(0.1,6.6,0.1);
+			var geometryramka2 = new THREE.BoxGeometry(0.1,1.4,0.3);
+			var geometryramka21n2 = new THREE.BoxGeometry(0.1,2,0.3);
+			var materialramka = new THREE.MeshBasicMaterial({color:'black'});
+			
+			for(var i=0;i<2;i++){
+			
+					var ramkas = new THREE.Mesh(geometryramka,materialramka);
+					var ramkas2 = new THREE.Mesh(geometryramka2,materialramka);
+					var ramkas21 = new THREE.Mesh(geometryramka21n2,materialramka);
+					var ramkas22 = new THREE.Mesh(geometryramka21n2,materialramka);
+				ramkas.position.set(-7.8+i*14.8,-0.2,0.3);
+				ramkas2.position.set(-7.8+i*14.8,2,0.3);
+				ramkas21.position.set(-7.8+i*14.8,0.3,0.3);
+				ramkas22.position.set(-7.8+i*14.8,-1.3,0.3);
+				ramkas2.rotateZ(Math.PI/2);
+				ramkas21.rotateZ(Math.PI/2);
+				ramkas22.rotateZ(Math.PI/2);
+				building.add(ramkas);
+				building.add(ramkas2);
+				building.add(ramkas21);
+				building.add(ramkas22);
+					
+			}
+			//main building
+			
+			var main = new THREE.Group();
+			scene.add(main);
+			var geometryB = new THREE.BoxGeometry(10,8,6);
+			var mainB = new THREE.Mesh(geometryB,material);
+			mainB.position.set(-0.5, -4.5, -1)
+			main.add(mainB);
+			
+			var geometryR = new THREE.CylinderGeometry(0,6.95,3,4,1);
+			var materialR = new THREE.MeshPhongMaterial({color:'#aa4a44'});
+				
+				var roofmb = new THREE.Mesh(geometryR,materialR);
+				roofmb.position.set(-0.5,1,-2.5);
+				roofmb.rotateY(Math.PI/4);
+				main.add(roofmb);
+				
+			var geometryprb = new THREE.BoxGeometry(1.7,3.05,0.1);
+			var materialprb = new THREE.MeshBasicMaterial({color:'black'});
+			
+			for(var i=0;i<5;i++){
+				var prozorecb = new THREE.Mesh(geometryprb,materialprb);
+				prozorecb.position.set(-4.5+i*2,-2.5,2);
+				building.add(prozorecb);
+					
+			}
+			var geometrypr = new THREE.BoxGeometry(1.5,3,0.1);
+			var geometryramka = new THREE.BoxGeometry(0.1,3,0.1);
+			var geometryramka2 = new THREE.BoxGeometry(0.1,1.5,0.3);
+			var materialpr = new THREE.MeshBasicMaterial({color:'lightgray'});
+			var materialramka = new THREE.MeshBasicMaterial({color:'black'});
+			
+			for(var i=0;i<5;i++){
+					var prozorec = new THREE.Mesh(geometrypr,materialpr);
+					var ramka = new THREE.Mesh(geometryramka,materialramka);
+					var ramka2 = new THREE.Mesh(geometryramka2,materialramka);
+				prozorec.position.set(-4.5+i*2,-2.5,2);
+				ramka.position.set(-4.5+i*2,-2.5,2);
+				ramka2.position.set(-4.5+i*2,-2.5,2);
+				ramka2.rotateZ(Math.PI/2);
+				building.add(prozorec);
+				building.add(ramka);
+				building.add(ramka2);
+					
+			}
+			
+			var geometrydoor = new THREE.BoxGeometry(2,4,0.1);
+			var materialdoor = new THREE.MeshPhongMaterial({color:'brown'});
+			var geometrydoork = new THREE.CircleGeometry(0.2,32);
+			var materialdoork = new THREE.MeshPhongMaterial({color:'lightgray'});
+			
+			var door1 = new THREE.Mesh(geometrydoor,materialdoor);
+				door1.position.set(-1.6,-6.5,2);
+				main.add(door1);
+			var door2 = new THREE.Mesh(geometrydoor,materialdoor);
+				door2.position.set(0.5,-6.5,2);
+				main.add(door2);
+				
+				var doorknob1 = new THREE.Mesh(geometrydoork,materialdoork);
+				doorknob1.position.set(-1,-5,4);
+				main.add(doorknob1);
+			var doorknob2 = new THREE.Mesh(geometrydoork,materialdoork);
+				doorknob2.position.set(0,-5,4);
+				main.add(doorknob2);
+			
+			
+			//statuq - barutnik -used reference photo - ne mi haresa figurata :(
+			var statue = new THREE.Group();
+			scene.add(statue);
+			
+			var geometry = new THREE.BoxGeometry(4,1,4);
+			var geometry2 = new THREE.BoxGeometry(2,0.7,2);
+			var material = new THREE.MeshPhongMaterial({color:'lightgray'});
+			var podlojka = new THREE.Mesh(geometry,material);
+				podlojka.position.set(-15,-6.5,2);
+				statue.add(podlojka);
+				var podlojka2 = new THREE.Mesh(geometry2,material);
+				podlojka2.position.set(-15,-6,2);
+				statue.add(podlojka2);
+			
+			
+			//barutnik
+			var bar = new THREE.Group();
+			scene.add(bar);
+			var param = 4.5;
+			
+			/*
+			var geometrybar = new THREE.CircleGeometry(1,32);
+			var materialbar = new THREE.MeshPhongMaterial({color:'brown'});
+			
+			var barutnik1 = new THREE.Mesh(geometrybar,materialbar);
+			barutnik1.position.set(-14.9,0.1-param,1.9);
+			barutnik1.rotateY(Math.PI/2);
+			barutnik1.rotateX(-Math.PI/6);
+			bar.add(barutnik1);
+			*/
+			var geometrybar = new THREE.SphereGeometry(1,32,16);
+			var materialbar = new THREE.MeshPhongMaterial({color:'brown'});
+			
+			var sfera = new THREE.Mesh(geometrybar,materialbar);
+			bar.add(sfera);
+			sfera.position.set(-15.5,-4.6,2);
+			sfera.rotateY(Math.PI/3);
+			sfera.rotateX(-Math.PI/8);
+			sfera.scale.set(0.8, 1.1, 0.5);
+			
+			var geometrybar = new THREE.BoxGeometry(0.4,1.5,1);
+			var materialbar = new THREE.MeshPhongMaterial({color:'brown'});
+			
+			var barutnik2 = new THREE.Mesh(geometrybar,materialbar);
+			barutnik2.position.set(-15.8,1-param,1.8);
+			barutnik2.rotateY(-Math.PI/8);
+			barutnik2.rotateZ(Math.PI/10);
+			bar.add(barutnik2);
+			
+			
+			var geometrybar = new THREE.BoxGeometry(0.2,0.3,1.4);
+			var materialbar = new THREE.MeshPhongMaterial({color:'brown'});
+			
+			var barutnik3 = new THREE.Mesh(geometrybar,materialbar);
+			barutnik3.position.set(-15.8,1.8-param,1.9);
+			barutnik3.rotateX(Math.PI);
+			barutnik3.rotateY(Math.PI/10);
+			bar.add(barutnik3);
+			
+			var geometrybar = new THREE.BoxGeometry(0.2,1,0.2);
+			var materialbar = new THREE.MeshPhongMaterial({color:'brown'});
+			
+			var barutnik4 = new THREE.Mesh(geometrybar,materialbar);
+			barutnik4.position.set(-16.8,1.6-param,1);
+			barutnik4.rotateZ(Math.PI/10);
+			bar.add(barutnik4);
+			
+			bar.children.forEach((child) => {
+				if (child.material) {
+				child.material.color.set('#734d26');
+				}
+			});
+			
+			
+			//ograda
+			
+			var geometrybar = new THREE.BoxGeometry(0.2,2,0.8);
+			var materialbar = new THREE.MeshPhongMaterial({color:'#696969'});
+			for(var i=0;i<5;i++){
+			var fencebar = new THREE.Mesh(geometrybar,materialbar);
+			fencebar.position.set(-20,-4.5,0+i*2);
+			bar.add(fencebar);
+			var fencebarHor = new THREE.Mesh(geometrybar,materialbar);
+			fencebarHor.position.set(-20,-4.5,0+i*2);
+			fencebarHor.rotateX(Math.PI/2);
+			bar.add(fencebarHor);
+			var fencebar2 = new THREE.Mesh(geometrybar,materialbar);
+			fencebar2.position.set(20,-4.5,0+i*2);
+			bar.add(fencebar2);
+			var fencebarHor2 = new THREE.Mesh(geometrybar,materialbar);
+			fencebarHor2.position.set(20,-4.5,0+i*2);
+			fencebarHor2.rotateX(Math.PI/2);
+			bar.add(fencebarHor2);
+			}
+			
+			for(var i=1;i<=5;i++){
+			var fencebar = new THREE.Mesh(geometrybar,materialbar);
+			fencebar.position.set(-20+i*2,-4.5,-0.5);
+			fencebar.rotateY(Math.PI/2);
+			bar.add(fencebar);
+			var fencebarHor = new THREE.Mesh(geometrybar,materialbar);
+			fencebarHor.position.set(-21+i*2,-4.5,-0.5);
+			fencebarHor.rotateX(Math.PI/2);
+			fencebarHor.rotateZ(Math.PI/2);
+			bar.add(fencebarHor);
+			}
+			for(var i=1;i<8;i++){
+			var fencebar = new THREE.Mesh(geometrybar,materialbar);
+			fencebar.position.set(5+i*2,-4.5,-0.5);
+			fencebar.rotateY(Math.PI/2);
+			bar.add(fencebar);
+			var fencebarHor = new THREE.Mesh(geometrybar,materialbar);
+			fencebarHor.position.set(5+i*2,-4.5,-0.5);
+			fencebarHor.rotateX(Math.PI/2);
+			fencebarHor.rotateZ(Math.PI/2);
+			bar.add(fencebarHor);
+			}
+			
+			//svetlina  
+						
+			var light1 = new THREE.PointLight( '#ffffff', 80 );
+			light1.position.set( -2, 4, 5 );
+			scene.add( light1 );
+			var light4 = new THREE.PointLight( '#ffffff', 90 );
+			light4.position.set( 5, 4, 5 );
+			scene.add( light4 );
+			var light2 = new THREE.PointLight( '#ff9999', 80 );
+			light2.position.set( -2, 13, 0 );
+			scene.add( light2 );
+			var light2 = new THREE.PointLight( '#ff9999', 80 );
+			light2.position.set( 6, 13, 0 );
+			scene.add( light2 );
+			var light3 = new THREE.PointLight( '#ff9999', 90 );
+			light1.position.set( -3, 3, 6 );
+			scene.add( light3 );
+			var light5 = new THREE.PointLight( '#ffffff', 40 );
+			light5.position.set( -16, -1, 4 );
+			scene.add( light5 );
+			
+			
+			
+			renderer.setAnimationLoop( drawFrame );
+			function drawFrame( t )
+			{
+				//bar.rotation.set(t/1000,0,0);
+				//sfera.rotation.set(0,0,t/1000);
+				renderer.render( scene, camera );
+
+			}
+			
+		</script>
+</body>
+</html>
