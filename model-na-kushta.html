@@ -1,0 +1,544 @@
+﻿<!DOCTYPE html>
+
+<!-- Име Фамилиев, група X, ф.н. XXXXX -->
+
+<html>
+	<head>
+		<style>
+			body { margin: 0; }
+			canvas { width: 100%; height: 100% }
+		</style>
+		<script type="importmap">
+			{ "imports": {
+				"three": "https://cdn.jsdelivr.net/npm/three@0.169.0/build/three.module.js",
+				"three/addons/": "https://cdn.jsdelivr.net/npm/three@0.169.0/examples/jsm/",
+				"domus-mea": "https://cdn.jsdelivr.net/gh/boytchev/CourseOKG@latest/domus-mea.js",
+				"csg/": "https://cdn.jsdelivr.net/gh/looeee/threejs-csg@main/src/CSG/"
+			} }
+			
+		</script>
+	</head>
+	
+	<body>
+
+		<script type="module">
+			import * as THREE from "three";
+			import {domusMea, scene, renderer, camera} from "domus-mea";
+			import {CSG} from "csg/CSG.js";
+			
+			
+			domusMea( '1MI0800443' ); // факултетен номер 
+			
+			// 1. преименувайте файла на moidom-g-fn.html
+			//    g=номер на група, а fn=факултетен номер
+			//
+			// 2. първо сменете параметъра на domusMea да
+			//    е факултетният ви номер - по този начин
+			//    ще се генерират сцена, земя и контур на
+			//    къщата ви, която ще трябва да направите
+			//
+			// 3. едва тогава почвайте да строите стените
+			//    и да добавяте исканите обекти по стаите
+			//
+			// 4. кубът по-долу е само за пример как може
+			//    да се слагат обекти, които правят сянка
+			//
+			// 5. едно зелено квадратче е широко 1 метър,
+			//    а белите квадратчета са големи по 20 см
+			//
+			// 6. горд съм как коментарите са равно дълги
+
+			//целех се към Barbie Dream House, затова всичко е розово :)
+			
+		//функция за сянка на обект
+			
+			function shadow(obj){
+				obj.receiveShadow = true;
+				obj.castShadow = true;
+				}
+			
+		//стени
+			
+			var geometry = new THREE.BoxGeometry( 5, 5, 0.2 ),
+				material = new THREE.MeshPhongMaterial( {color: '#ff88dc'} );
+				
+			var stena1 = new THREE.Mesh( geometry, material );
+				stena1.position.set( 6.5, 1.5, -0.9);	
+				shadow(stena1);
+			scene.add( stena1 );
+			var geometry2 = new THREE.BoxGeometry( 0.2, 5, 6.2 );
+			
+			var stena2 = new THREE.Mesh( geometry2, material );
+				stena2.position.set(  3.9, 1.5, -3.9 );
+			
+			var geometry3= new THREE.BoxGeometry( 8, 5, 0.2);
+				
+			var stena3 = new THREE.Mesh( geometry3, material );
+				stena3.position.set(  0, 1.5, -6.9 );
+			
+			
+			
+			var stena4 = new THREE.Mesh( geometry2, material );
+				stena4.position.set(  4-7.9, 1.5, -3.9 );
+			
+			
+			var geometry5= new THREE.BoxGeometry( 1, 5, 0.2);
+				
+			var stena5 = new THREE.Mesh( geometry5, material );
+			
+				stena5.position.set(  -4.5, 1.5, -0.9);
+			
+			scene.add( stena5 );
+			
+			var geometry6 = new THREE.BoxGeometry( 0.2, 5, 7);
+			var stena6 = new THREE.Mesh( geometry6, material );
+				stena6.position.set(  4-8-0.9, 1.5, 2.5 );
+			
+			
+			
+			
+			var geometry7 = new THREE.BoxGeometry( 14, 5, 0.2 );
+			var stena7 = new THREE.Mesh( geometry7, material );
+				stena7.position.set(  2, 1.5, 5.9 );
+			
+			
+			
+			var geometry8 = new THREE.BoxGeometry( 0.2, 5, 6.8 );
+			var stena8 = new THREE.Mesh( geometry8, material );
+				stena8.position.set(  8.9, 1.5, 2.4 );
+			
+
+			
+		//вътрешни стени
+			
+			var vestib = new THREE.Mesh( geometry2, material );
+				vestib.position.set(  (4-8)/4, 1.5, -3.8 );
+			
+			var geometryinside= new THREE.BoxGeometry( 5, 5, 0.2);
+			var pom1 = new THREE.Mesh( geometryinside, material );
+				pom1.position.set(  1.4, 1.5, -4.1 );
+			
+			scene.add( pom1 );
+			
+			var pom2 = pom1.clone();
+			pom2.position.set(  1.6, 1.5, -4.1+3.3 );
+			
+			
+			var geometryinside= new THREE.BoxGeometry( 3, 5, 0.2);
+			var cor = new THREE.Mesh( geometryinside, material );
+				cor.position.set( -2.6, 1.5, -4.1+3.2);
+			
+			var trapez = new THREE.Group();
+			scene.add(trapez);
+			
+			var s1 = new THREE.Mesh(new THREE.BoxGeometry(0.2,5,2), material);
+				s1.position.set(-1,1.5,0);
+			trapez.add(s1);
+				
+			var s2 = new THREE.Mesh(new THREE.BoxGeometry(0.2,5,2), material);
+				s2.position.set(-0.35,1.5,1.65);
+				s2.rotateY(Math.PI/4);
+			trapez.add(s2);
+			
+			var s3 = new THREE.Mesh(new THREE.BoxGeometry(0.2,5,3.6), material);
+				s3.position.set(0.35,1.5,4.1);
+				
+			var banq = new THREE.Mesh( new THREE.BoxGeometry( 0.2, 5, 2.6 ), material );
+				banq.position.set(  4, 1.5, 0.3 );
+			
+			scene.add( banq );
+			
+			var room = pom1.clone();
+			room.position.set(6.4,1.5,1.7);
+			
+			//door_mat // da ne se burka s doormat - iztrivalka
+			var doormaterial = new THREE.MeshPhongMaterial( {color: '#4f0048'} );
+			
+			
+			
+		//прозорци - дупки
+			
+			var csg = new CSG();
+			const windowy = 2;
+			var windowmat = new THREE.MeshBasicMaterial( {color: 'white'});
+			var window = new THREE.Mesh(new THREE.BoxGeometry(0.8,windowy,0.8),windowmat);
+			
+			
+			var w1 = window.clone();
+			w1.scale.set(3,1,1);
+			
+			w1.position.copy(cor.position);
+			w1.position.z+=6.8; w1.position.y*=1.5; 
+			
+			var w2 = w1.clone();	
+			w2.position.copy(w1.position);
+			
+			w2.position.x+=6;
+			csg.subtract([stena7,w1,w2]);
+			stena7 = csg.toMesh();
+			
+			scene.add(stena7);
+			/*
+			var wind_banq = new THREE.Mesh(new THREE.BoxGeometry(1,0.4,0.4),doormaterial);
+			wind_banq.position.copy(stena8.position);
+			wind_banq.position.z *=-0.2; wind_banq.position.y*=2.2;
+			stena8 = cuthole(stena8, wind_banq);
+			*/
+			scene.add(stena8);
+			
+			var w3 = window.clone();
+			w3.scale.set(2,1,1);
+			w3.position.copy(stena3.position);
+			w3.position.x+=1; w3.position.y*=1.5;
+			
+			stena3 = cuthole(stena3, w3);
+			
+			
+			var w4 = window.clone();
+			w4.scale.set(1,1,1);
+			w4.position.copy(stena2.position);
+			w4.position.z+=1.5; w4.position.y*=1.5;
+			
+			var w5 = w4.clone();
+			w5.position.z-=1.5*2;
+			
+			var csg = new CSG();
+			stena2 = csg.toMesh(csg.subtract([stena2, w4,w5]));
+			scene.add(stena2);
+			
+			var w6 = window.clone();
+			w6.scale.set(1,0.5,1);
+			w6.position.copy(stena4.position);
+			w6.position.y+=1;
+			stena4 = cuthole(stena4,w6);
+			scene.add(stena4);
+			
+			var w7 = window.clone();
+			w7.position.copy(stena6.position);
+			w7.position.y+=1;
+			stena6 = cuthole(stena6, w7);
+			scene.add(stena6);
+			
+		//прозорци
+		
+			var windows = [w1,w2, w3, w4, w5, w7, w6];
+			//console.log(windows.length);
+			for(var i=0;i<windows.length-1;i++){
+				windows[i].height = windowy;
+			}
+			for(let i=0;i < windows.length;i++){
+				insidewindow(windows[i]);
+			}
+			//insidewindow(wind_banq);
+			
+		//врати
+		
+			//var doormaterial = new THREE.MeshPhongMaterial( {color: 'gray'} );
+			var door = new THREE.Mesh(new THREE.BoxGeometry(1,2.5,1), doormaterial);
+			door.position.set(5,1.5,1.7);
+			as(door);
+			var csg = new CSG();			
+			room = csg.toMesh(csg.subtract([room, door]));
+			scene.add(room);
+			
+			var entrance = door.clone();
+			entrance.position.set(  -2.5, 1, -7.1 );
+			var csg = new CSG();
+			
+			stena3 = csg.toMesh(csg.subtract([stena3, entrance]));
+			scene.add(stena3);
+			
+			var pom2door = door.clone();
+			pom2door.position.copy( pom2.position);
+			as(pom2door);
+			var csg = new CSG();
+			pom2 = csg.toMesh(csg.subtract([pom2, pom2door]));
+			scene.add(pom2);
+			
+			var vest1 = door.clone();
+			var vest2 = door.clone();
+			vest1.position.copy( vestib.position);
+			vest2.position.copy( vestib.position);
+			vest1.position.z = vestib.position.z -1.5;
+			vest2.position.z = vestib.position.z +1.5;
+			as(vest1);as(vest2);
+			
+			var csg = new CSG();
+			vestib = csg.toMesh(csg.subtract([vestib, vest1,vest2]));
+			scene.add(vestib);
+			
+			var cordoor = door.clone();
+			cordoor.position.copy( cor.position);
+			as(cordoor);
+			var csg = new CSG();
+			cor = csg.toMesh(csg.subtract([cor, cordoor]));
+			scene.add(cor);
+			
+			var sdoor = door.clone();
+			sdoor.position.copy( s3.position);
+			as(sdoor);
+			var csg = new CSG();
+			s3 = csg.toMesh(csg.subtract([s3, sdoor]));
+			trapez.add(s3);
+			
+			var entrdoor = entrance.clone();
+			entrdoor.position.copy(entrance.position);
+			entrdoor.scale.z = 0.2;
+			entrdoor.position.z +=0.2;
+			
+			scene.add(entrdoor);
+			
+		//мебели
+			
+			//carpet
+			var carpet = new THREE.Mesh(new THREE.BoxGeometry(1,0.15,5),
+			new THREE.MeshPhongMaterial(( {color: '#ff00a9'} )));
+			carpet.position.set(-2.5,0,-4.4);
+			scene.add(carpet);
+			
+			//carpet 2
+			
+			var kilim = new THREE.Group();
+			scene.add(kilim);
+			var colors = ['#ff46a2' , '#de92b8', '#d64c99']
+			for(var i=0;i<3;i++){
+			var carpet = new THREE.Mesh(new THREE.CylinderGeometry(1.5 - i*0.4,1.5-i*0.3,0.1+i*0.01,32),
+			new THREE.MeshPhongMaterial(( {color: colors[i]} )));
+			carpet.position.set(5,0,4);
+			kilim.add(carpet);
+			}
+			
+			var carp = kilim.clone();
+			carp.position.copy(pom1.position);
+			carp.position.x-=5;
+			carp.position.y = 0;
+			carp.position.z -= 2.3;
+			scene.add(carp);
+			//ice cream
+			
+			function ice_cream(flavor1, flavor2, x, y,z){
+			var icecream = new THREE.Group();
+			scene.add(icecream);
+			var cone = new THREE.Mesh(new THREE.CylinderGeometry( 0.1, 0, 0.5, 32, 1),
+			new THREE.MeshBasicMaterial( {color: '#e8c44f'} ));
+			
+			var ball = new THREE.Mesh(new THREE.SphereGeometry( 0.093, 32, 64,0,2*Math.PI,Math.PI*1.5,Math.PI),
+			new THREE.MeshPhongMaterial( {color: flavor1} ));
+			
+			ball.position.copy(cone.position);
+			ball.position.y+=0.24;
+			var ball2 = new THREE.Mesh(new THREE.SphereGeometry( 0.07, 32, 100,0,2*Math.PI,Math.PI*1.53,Math.PI),
+			new THREE.MeshPhongMaterial( {color: flavor2} ));
+			
+			ball2.position.copy(ball.position);
+			ball2.position.y+=0.07;
+			icecream.add(cone,ball,ball2);
+			icecream.position.set(x,y,z);
+			}
+			var ice = ice_cream('#bf8bff', '#adebb3', -3, 1, 0); //вкус виолетка и вкус мента
+			var ice2 = ice_cream('#ff00ff', '#ffa400', -3,1,1); //портокал и ягода
+			//създаване на втори обект - работи!!
+			
+			
+			
+			//bed
+			var bed = new THREE.Group();
+			scene.add(bed);
+			
+			var base = new THREE.Mesh(new THREE.BoxGeometry( 4, 0.6, 2),
+			new THREE.MeshStandardMaterial(( {color: '#e8c44f'} )));
+			
+			var mattress = base.clone();
+			mattress.material = new THREE.MeshStandardMaterial( {color: '#ffffff'} );
+			mattress.scale.set(0.9,1.1,0.9);
+			mattress.position.y+=0.1;
+			
+			var blanket = base.clone();
+			blanket.material = new THREE.MeshStandardMaterial( {color: '#f111b9'} );
+			blanket.scale.set(0.8,1.1,0.9);
+			blanket.position.y+=0.11;
+			blanket.position.x-=0.15;
+			for(var i=0;i<9;i++){
+				for(var j=0;j<16;j++){
+					var sq = new THREE.Mesh(new THREE.BoxGeometry( 0.2, 0.15, 0.2),
+					new THREE.MeshStandardMaterial(( {color: '#a64c79'} )));
+					sq.position.y = blanket.position.y +0.259;
+					if ((i + j) % 2 === 0) {
+					sq.position.x = blanket.position.x -1.5 + j * 0.2 ;
+					sq.position.z = blanket.position.z - 0.8  +  i * 0.2 ;
+					};
+					bed.add(sq);
+				}
+			}	
+			var pillow = new THREE.Mesh(new THREE.BoxGeometry( 0.5, 0.15, 1),
+			new THREE.MeshStandardMaterial(( {color: '#ff46a2'} )));
+			pillow.position.y += 0.5;
+			pillow.position.x += 1.6;
+			
+			var frame = new THREE.Mesh(new THREE.BoxGeometry( 0.2, 2, 2),
+			new THREE.MeshStandardMaterial(( {color: '#e8c44f'} )));
+			frame.position.x += 2;
+			bed.add(base,mattress, blanket,pillow,frame);
+			shadow(bed);
+			bed.position.set(6.7,0.5,4);
+			
+			
+			//ще се гръмна
+			
+			//phone
+			
+			var telefon =telephone(-2,0,3);
+
+
+			//функции
+			
+			//функцията променя у - координатата на обекта
+			//цел - за да изглеждат вратите като врати,
+			//а не като смешни правоъгълни дупки в стената
+			function as(obj){
+			obj.position.y-=0.5;
+			}
+			//функция за прозорците
+			function insidewindow(w){
+				var obj = w.clone();
+				for(var i=3;i<windows.length;i++){
+					if(w === windows[i] ){
+						obj.rotation.y = Math.PI/2;
+					}
+				}
+				obj.scale.set(w.scale.x,w.scale.y,0.25);
+				var h1 = obj.clone();
+				h1.scale.set(obj.scale.x - 0.2, obj.scale.y-0.1,0.25);
+				obj = cuthole(obj,h1);
+				if(w === windows[0] || w===windows[1]) {
+					var bar = new THREE.Mesh(new THREE.BoxGeometry(0.2,w.height,0.2), windowmat);
+					bar.position.copy(h1.position);
+					scene.add(bar);
+				}
+				scene.add(obj);
+			}
+		//функция за телефон
+		function telephone(x,y,z){
+				
+				var phone = new THREE.Group();
+				phone.scale.set(0.2,0.2,0.2);
+				
+								
+				//Materials
+				
+				var mat =new THREE.MeshStandardMaterial(( {color: '#ff0099'} ));
+				var matt =new THREE.MeshStandardMaterial(( {color: '#ffff00'} ));
+				var mat2 =new THREE.MeshStandardMaterial(( {color: '#ffffff'} ));
+				
+				//phone Base
+				
+				var base = new THREE.Mesh(new THREE.BoxGeometry( 2.1, 1, 2.1), mat);
+				base.position.set(0,0,0);
+				
+				var b2 = new THREE.Mesh(new THREE.CylinderGeometry( 1, 1.5, 1,4 ),mat);
+				b2.position.copy(base.position);
+				b2.position.y= base.position.y+1;
+				b2.rotation.y = Math.PI/4;
+				
+				var h1 = new THREE.Mesh(new THREE.BoxGeometry( 0.2, 0.5, 0.2),mat);
+				h1.position.set(b2.position.x - 0.2, b2.position.y +0.6, b2.position.z-0.5);
+				
+				var h2 = h1.clone();
+				h2.position.x+=0.6;
+				
+				var h11 = new THREE.Mesh(new THREE.BoxGeometry( 0.2, 0.35, 0.2),mat);
+				h11.position.copy(h1.position);
+				h11.position.z+=0.7;
+				console.log(h1.position);
+				console.log(h11.position);
+				
+				var h22 = h11.clone();
+				h22.position.x = h2.position.x;
+				
+				phone.add(base,b2,h1,h2,h11,h22);
+				
+				
+				//slushalka
+				
+				var s = new THREE.Group();
+				
+				var handle  = new THREE.Mesh(new THREE.TorusGeometry(3,0.3,30,10,Math.PI/4), mat);
+				handle.position.copy(h1.position);
+				handle.position.y -= 2.6 ;
+				handle.position.x = (h1.position.x+h2.position.x)/2 - 0.1;
+				handle.position.z = (h1.position.z+h11.position.z)/2;
+				handle.rotation.z = Math.PI/2.7;
+				
+				
+				var p1 = new THREE.Mesh(new THREE.CapsuleGeometry(0.4,0.15,32,32),mat);
+				p1.position.copy(handle.position);
+				p1.position.x -= 1.1;
+				p1.position.y += 2.6;
+				
+				
+				
+				var rem = new THREE.Mesh(new THREE.BoxGeometry( 1, 1,2),mat2);
+				rem.position.copy(p1.position);
+				rem.position.y-=0.75;
+				
+				
+				p1 = cuthole(p1,rem);
+				var p2 = p1.clone();
+				p2.position.x+=2.2;
+				rem.position.x = p2.position.x;
+				p2 = cuthole(p2,rem);
+				
+				s.add(handle,p1,p2);
+				s.position.y-=0.1;
+
+
+				var diale = dial();
+				diale.position.copy(b2.position);
+				diale.position.z+=0.68;
+				diale.position.y-=0.05;
+				diale.rotation.x = Math.PI*1.9;
+
+				phone.add(diale,s);
+				phone.position.set(x,y,z);
+				scene.add(phone);
+				
+		}
+		
+		function dial(){
+			var mat =new THREE.MeshStandardMaterial(( {color: 0xffffff} ));
+			dial = new THREE.Group();
+			var fragment  = new THREE.Mesh(new THREE.TorusGeometry(0.3,0.25,32,30, Math.PI/6), mat);
+
+				 var button = new THREE.Mesh(new THREE.CylinderGeometry(0.06, 0.06, 0.8, 32));
+				button.rotation.x = Math.PI/2;
+				button.position.x+=0.32;
+				button.position.y += 0.08;
+				var newfrag = cuthole(fragment,button);
+				
+
+				for(var i=0;i<12;i++){
+					var p;
+					if(i<2){
+						p = fragment.clone();
+					}
+					else p=newfrag.clone();
+					p.rotation.z = i*Math.PI/6;
+					dial.add(p);
+				}
+				dial.rotation.z = -Math.PI/6;
+				return dial;
+		}
+			//функция за дупките 
+			function cuthole(out, inn){
+					var csg = new CSG();
+					return csg.toMesh(csg.subtract([out, inn]));
+					//scene.add(out);
+			}
+			//setTimeout(() => location.reload(), 3000);
+			
+		</script>
+		
+	</body>
+</html>
+
+
