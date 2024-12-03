@@ -1,0 +1,294 @@
+﻿<!DOCTYPE html>
+
+<!-- Име Фамилиев, група X, ф.н. XXXXX -->
+
+<html>
+	<head>
+		<style>
+			body { margin: 0; }
+			canvas { width: 100%; height: 100% }
+		</style>
+		<script type="importmap">
+			{ "imports": {
+				"three": "https://cdn.jsdelivr.net/npm/three@0.169.0/build/three.module.js",
+				"three/addons/": "https://cdn.jsdelivr.net/npm/three@0.169.0/examples/jsm/",
+				"domus-mea": "https://cdn.jsdelivr.net/gh/boytchev/CourseOKG@latest/domus-mea.js",
+				"csg/": "https://cdn.jsdelivr.net/gh/looeee/threejs-csg@main/src/CSG/"
+			} }
+		</script>
+	</head>
+	
+	<body>
+
+		<script type="module">
+			import * as THREE from "three";
+			import {domusMea, scene, renderer, camera} from "domus-mea";
+			import {CSG} from "csg/CSG.js";
+			domusMea( '1MI0800443' ); // факултетен номер 
+			
+			// 1. преименувайте файла на moidom-g-fn.html
+			//    g=номер на група, а fn=факултетен номер
+			//
+			// 2. първо сменете параметъра на domusMea да
+			//    е факултетният ви номер - по този начин
+			//    ще се генерират сцена, земя и контур на
+			//    къщата ви, която ще трябва да направите
+			//
+			// 3. едва тогава почвайте да строите стените
+			//    и да добавяте исканите обекти по стаите
+			//
+			// 4. кубът по-долу е само за пример как може
+			//    да се слагат обекти, които правят сянка
+			//
+			// 5. едно зелено квадратче е широко 1 метър,
+			//    а белите квадратчета са големи по 20 см
+			//
+			// 6. горд съм как коментарите са равно дълги
+
+			
+					var t = telephone(3,2,3);
+					//var d = dial(2,2,2);
+					//scene.add(d);
+					function old_telephone(x,y,z){
+				
+				var phone = new THREE.Group();
+				phone.scale.set(0.2,0.2,0.2);
+				scene.add(phone);
+				
+				
+				//Materials
+				
+				var mat =new THREE.MeshStandardMaterial(( {color: '#ff0000'} ));
+				var mat2 =new THREE.MeshStandardMaterial(( {color: '#ffffff'} ));
+				
+				//phone Base
+				
+				var base = new THREE.Mesh(new THREE.BoxGeometry( 3, 1, 3), mat);
+				base.position.set(x,y,z);
+				
+				var b2 = new THREE.Mesh(new THREE.CylinderGeometry( 1, 2.12, 1,4 ),mat);
+				b2.position.copy(base.position);
+				b2.position.y= base.position.y+1;
+				b2.rotation.y = Math.PI/4;
+				
+				var h1 = new THREE.Mesh(new THREE.BoxGeometry( 0.2, 0.5, 0.2),mat);
+				h1.position.set(b2.position.x - 0.2, b2.position.y +0.6, b2.position.z-0.5);
+				
+				var h2 = h1.clone();
+				h2.position.x+=0.6;
+				
+				var h11 = new THREE.Mesh(new THREE.BoxGeometry( 0.2, 0.35, 0.2),mat);
+				h11.position.copy(h1.position);
+				h11.position.z+=0.7;
+				console.log(h1.position);
+				console.log(h11.position);
+				
+				var h22 = h11.clone();
+				h22.position.x = h2.position.x;
+				
+				phone.add(base,b2,h1,h2,h11,h22);
+				
+				
+				//slushalka
+				
+				var handle = new THREE.Mesh(new THREE.BoxGeometry( 3, 0.4, 0.4), mat);
+				handle.position.copy(h1.position);
+				handle.position.x = (h1.position.x+h2.position.x)/2;
+				handle.position.y +=0.1;
+				handle.position.z = (h1.position.z+h11.position.z)/2;
+				
+				var p1 = new THREE.Mesh(new THREE.CapsuleGeometry(0.5,0.1,32,32),mat);
+				p1.position.copy(handle.position);
+				p1.position.x -= 1.6;
+				p1.position.y -= 0.2;
+				
+				
+				
+				var rem = new THREE.Mesh(new THREE.BoxGeometry( 1, 1,2),mat2);
+				rem.position.copy(p1.position);
+				rem.position.y-=0.75;
+				
+				
+				p1 = cuthole(p1,rem);
+				var p2 = p1.clone();
+				p2.position.x+=3;
+				rem.position.x = p2.position.x;
+				p2 = cuthole(p2,rem);
+				
+				
+				var shaiba  = new THREE.Mesh(new THREE.TorusGeometry(0.3,0.25,300,100), mat2);
+				shaiba.position.copy(b2.position);
+				shaiba.position.z+=0.85;
+				//shaiba.position.y;
+				shaiba.rotation.x = -Math.PI/4.85;
+				
+				
+				phone.add(handle,p1,p2,shaiba);
+		}
+
+					function telephone(x,y,z){
+				
+					var phone = new THREE.Group();
+					phone.scale.set(0.2,0.2,0.2);
+					scene.add(phone);
+									
+					//Materials
+					
+					var mat =new THREE.MeshStandardMaterial(( {color: '#ff0000'} ));
+					var matt =new THREE.MeshStandardMaterial(( {color: '#ffff00'} ));
+					var mat2 =new THREE.MeshStandardMaterial(( {color: '#ffffff'} ));
+					
+					//phone Base
+					
+					var base = new THREE.Mesh(new THREE.BoxGeometry( 3, 1, 3), mat);
+					base.position.set(x,y,z);
+					
+					var b2 = new THREE.Mesh(new THREE.CylinderGeometry( 1, 2.12, 1,4 ),mat);
+					b2.position.copy(base.position);
+					b2.position.y= base.position.y+1;
+					b2.rotation.y = Math.PI/4;
+					
+					var h1 = new THREE.Mesh(new THREE.BoxGeometry( 0.2, 0.5, 0.2),mat);
+					h1.position.set(b2.position.x - 0.2, b2.position.y +0.6, b2.position.z-0.5);
+					
+					var h2 = h1.clone();
+					h2.position.x+=0.6;
+					
+					var h11 = new THREE.Mesh(new THREE.BoxGeometry( 0.2, 0.35, 0.2),mat);
+					h11.position.copy(h1.position);
+					h11.position.z+=0.7;
+					console.log(h1.position);
+					console.log(h11.position);
+					
+					var h22 = h11.clone();
+					h22.position.x = h2.position.x;
+					
+					phone.add(base,b2,h1,h2,h11,h22);
+					
+					
+					//slushalka
+					
+					var handle = new THREE.Mesh(new THREE.BoxGeometry( 3, 0.1, 0.1), mat);
+					handle.position.copy(h1.position);
+					handle.position.x = (h1.position.x+h2.position.x)/2;
+					handle.position.y +=0.1;
+					handle.position.z = (h1.position.z+h11.position.z)/2;
+					
+					
+					var upperpart  = new THREE.Mesh(new THREE.TorusGeometry(3,0.4,300,100,Math.PI/3), mat);
+					upperpart.position.copy(handle.position);
+					upperpart.position.y-=2.6;
+					upperpart.position.x-=0.1;
+					upperpart.rotation.z= Math.PI/3;
+					
+					var p1 = new THREE.Mesh(new THREE.CapsuleGeometry(0.5,0.1,32,32),mat);
+					p1.position.copy(handle.position);
+					p1.position.x -= 1.6;
+					p1.position.y -= 0.2;
+					
+					
+					
+					var rem = new THREE.Mesh(new THREE.BoxGeometry( 1, 1,2),mat2);
+					rem.position.copy(p1.position);
+					rem.position.y-=0.75;
+					
+					
+					p1 = cuthole(p1,rem);
+					var p2 = p1.clone();
+					p2.position.x+=3;
+					rem.position.x = p2.position.x;
+					p2 = cuthole(p2,rem);
+					
+					var dial = dial();
+					dial.position.copy(b2.position);
+					dial.position.z+=0.85;
+					dial.rotation.x = -Math.PI/4.85;
+					phone.add(dial, p1,p2,upperpart,handle);
+					
+			}
+			
+			function dial(){
+				var mat =new THREE.MeshStandardMaterial(( {color: 0xffffff} ));
+				dial = new THREE.Group();
+				var fragment  = new THREE.Mesh(new THREE.TorusGeometry(0.3,0.25,32,30, Math.PI/6), mat);
+
+					 var button = new THREE.Mesh(new THREE.CylinderGeometry(0.06, 0.06, 0.8, 32));
+					button.rotation.x = Math.PI/2;
+					button.position.x+=0.35;
+					button.position.y += 0.08;
+					var newfrag = cuthole(fragment,button);
+					
+
+					for(var i=0;i<12;i++){
+						var p;
+						if(i<2){
+							p = fragment.clone();
+						}
+						else p=newfrag.clone();
+						p.rotation.z = i*Math.PI/6;
+						dial.add(p);
+					}
+					//dial.position.set(x,y,z);
+					dial.rotation.z = -Math.PI/6;
+					return dial;
+
+
+			}
+			function schaiben(){
+
+				var matt =new THREE.MeshStandardMaterial(( {color: '#ffffff'} ));
+					var matt2 =new THREE.MeshStandardMaterial(( {color: '#ffff00'} ));
+					
+					var shaiba  = new THREE.Mesh(new THREE.TorusGeometry(0.3,0.25,50,50),
+					 matt);
+					
+					var rad = 0.35;
+					var nums = [];
+					
+					for(var i=0;i<10;i++){
+						
+						var angle = (i/10) * Math.PI * 2;
+						
+						var button = new THREE.Mesh(new THREE.CylinderGeometry(0.08, 0.08, 1, 32), matt2);
+						
+						var x = rad * Math.cos(angle);
+						var z = rad * Math.sin(angle);
+						button.position.set(x,3,z);
+						//scene.add(button)
+						nums.push(button);
+						}
+						//казва се така, защото беше голям цирк да го направя
+						var cirk =new THREE.Mesh(new THREE.CylinderGeometry(1, 1, 0.01, 32), matt2);
+						cirk.position.set(0,3,0);
+						
+						var csg = new CSG();
+						csg.union(nums);
+						var dupki = csg.toMesh();
+
+						var cssg = new CSG();
+						cssg.union([cirk, dupki]);
+						var fin = cssg.toMesh();
+						
+						fin.position.copy(shaiba.position);
+						fin.position.z -= 3;
+						fin.rotation.x = Math.PI/2;
+
+						var cd = new CSG();
+						cd.subtract([shaiba, fin]);
+						var sth = cd.toMesh();
+
+						return sth;
+			}
+			
+			function cuthole(out, inn){
+					var csg = new CSG();
+					return csg.toMesh(csg.subtract([out, inn]));
+					//scene.add(out);
+					}
+					
+		</script>
+		
+	</body>
+</html>
+
+
