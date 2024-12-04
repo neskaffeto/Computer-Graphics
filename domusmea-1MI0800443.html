@@ -294,9 +294,7 @@
 			var carpet = new THREE.Mesh(new THREE.BoxGeometry(1,0.15,5),
 			new THREE.MeshPhongMaterial(( {color: '#ff00a9'} )));
 			carpet.position.set(-2.5,0,-4.4);
-			shadow(carpet);
 			scene.add(carpet);
-
 			
 			//carpet 2
 			
@@ -315,7 +313,6 @@
 			carp.position.x-=5;
 			carp.position.y = 0;
 			carp.position.z -= 2.3;
-			shadow(carp);
 			scene.add(carp);
 
 			var platform = new THREE.Mesh(new THREE.CylinderGeometry(0.5 ,0.5,0.4,32),
@@ -324,7 +321,6 @@
 			//platform.position.x-=5;
 			platform.position.y = 0.3;
 			platform.position.z += 1.6;
-			shadow(platform);
 			scene.add(platform);
 			//ice cream		
 			
@@ -378,7 +374,6 @@
 			//nightstand
 			
 			var stand = new THREE.Group();
-			shadow(stand);
 			scene.add(stand);
 			var mat = new THREE.MeshPhongMaterial({color:'#e8c44f'});
 			
@@ -405,7 +400,6 @@
 			
 			var tablemat = new THREE.MeshPhongMaterial({color:'#f2b9c8'});
 			var table = new THREE.Group();
-			shadow(table);
 			scene.add(table)
 			var t1 = new THREE.Mesh(new THREE.BoxGeometry(2,0.2,1.7),
 			tablemat);
@@ -547,7 +541,6 @@
 
 			icecream.add(cone,cone2,ball,ball2);
 			icecream.scale.set(0.3,0.3,0.3);
-			shadow(icecream);
 			//icecream.position.set(x,y,z);
 			return icecream;
 			}
@@ -644,7 +637,6 @@
 
 				phone.add(diale,s,corde);
 				phone.position.set(x,y,z);
-				shadow(phone);
 				return phone;
 				
 		}
