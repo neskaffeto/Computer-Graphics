@@ -426,8 +426,31 @@
 			leg4.position.set(leg2.position.x,leg2.position.y,t3.position.z);
 			table.add(leg1,leg2,leg3,leg4);
 
-			var ice = ice_cream('#bf8bff', '#adebb3', t1.position.x,t1.position.y+0.5,t1.position.z); //вкус виолетка и вкус мента
-			var ice2 = ice_cream('#ff00ff', '#ffa400', t1.position.x,t1.position.y+0.5,t1.position.z+1); //портокал и ягода
+			//поставка за сладоледи
+			var icestand = new THREE.Mesh(new THREE.BoxGeometry(0.3,0.1,0.1),
+			new THREE.MeshStandardMaterial({color: '#f987c5'} ));
+			icestand.position.copy(t1.position);
+			icestand.position.y+=0.2;
+			var conehole = new THREE.Mesh(new THREE.CylinderGeometry( 0.03, 0, 0.15, 32, 1));
+			conehole.position.copy(icestand.position);
+			conehole.position.y+=0.05;
+			icestand = cuthole(icestand,conehole);
+			for(var i=0;i<5;i++){
+				var fragment = icestand.clone();
+				fragment.position.z += i*0.1;
+				var ice = ice_cream('#bf8bff', '#adebb3'); //вкус виолетка и вкус мента
+				//ice.position.copy(fragment.position);
+				ice.position.x = t1.position.x;
+				ice.position.z = t1.position.z + i*0.1;
+				ice.position.y=1.75;
+				console.log(ice.position);
+				scene.add(fragment,ice);
+			}
+			
+			
+			//var ice2 = ice_cream('#ff00ff', '#ffa400', t1.position.x,t1.position.y+0.5,t1.position.z+1); //портокал и ягода
+			//scene.add(ice, ice2)
+
 			//създаване на втори обект - работи!!
 			/*
 			var drawer2 = drawer.clone();
@@ -468,9 +491,9 @@
 				scene.add(obj);
 			}
 
-			function ice_cream(flavor1, flavor2, x, y,z){
+			function ice_cream(flavor1, flavor2){
 			var icecream = new THREE.Group();
-			scene.add(icecream);
+			//scene.add(icecream);
 			var cone = new THREE.Mesh(new THREE.CylinderGeometry( 0.1, 0, 0.5, 32, 1),
 			new THREE.MeshBasicMaterial( {color: '#e8c44f'} ));
 			
@@ -484,8 +507,11 @@
 			
 			ball2.position.copy(ball.position);
 			ball2.position.y+=0.07;
+
 			icecream.add(cone,ball,ball2);
-			icecream.position.set(x,y,z);
+			icecream.scale.set(0.3,0.3,0.3);
+			//icecream.position.set(x,y,z);
+			return icecream;
 			}
 		//функция за телефон
 		function telephone(x,y,z){
