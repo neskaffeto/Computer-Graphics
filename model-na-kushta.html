@@ -390,7 +390,7 @@
 
 			//table
 			
-			var tablemat = new THREE.MeshPhongMaterial({color:'#a67556'});
+			var tablemat = new THREE.MeshPhongMaterial({color:'#f2b9c8'});
 			var table = new THREE.Group();
 			scene.add(table)
 			var t1 = new THREE.Mesh(new THREE.BoxGeometry(2,0.2,1.7),
@@ -425,7 +425,19 @@
 			var leg4 = leg1.clone();
 			leg4.position.set(leg2.position.x,leg2.position.y,t3.position.z);
 			table.add(leg1,leg2,leg3,leg4);
-
+			//покривка
+			
+			var pokrivka = new THREE.Mesh(new THREE.BoxGeometry(1.5,0.02,1.5),
+			new THREE.MeshStandardMaterial({color: '#de3163'} ));
+			pokrivka.position.copy(t1.position);
+			pokrivka.position.y+=0.15;
+			pokrivka.rotation.y = Math.PI/4;
+			scene.add(pokrivka);
+			var pokrivka2 = new THREE.Mesh(new THREE.BoxGeometry(1,0.1,3.2),
+			new THREE.MeshStandardMaterial({color: '#f64a8a'} ));
+			pokrivka2.position.copy(t1.position);
+			pokrivka2.position.y+=0.09;
+			scene.add(pokrivka2);
 			//поставка за сладоледи
 			var icestand = new THREE.Mesh(new THREE.BoxGeometry(0.3,0.1,0.1),
 			new THREE.MeshStandardMaterial({color: '#f987c5'} ));
@@ -435,22 +447,32 @@
 			conehole.position.copy(icestand.position);
 			conehole.position.y+=0.05;
 			icestand = cuthole(icestand,conehole);
+			
+			var icstnd = new THREE.Group();
+			var iccolors = ['#bf8bff', '#adebb3','#ff00ff', '#ffa400','#fe5bac',
+			'#ff69b4','#6b3e26','#ffcb85','	#ffc0cb', '#99705b'];
+
+			//вкус виолетка и вкус мента
+			//ягода и портокал
+			//малиново сорбе и дъвка
+			//шоколад и лимон
+			//ванилия и кафе
+
+			
 			for(var i=0;i<5;i++){
 				var fragment = icestand.clone();
 				fragment.position.z += i*0.1;
-				var ice = ice_cream('#bf8bff', '#adebb3'); //вкус виолетка и вкус мента
+				var ice = ice_cream(iccolors[i*2],iccolors[i*2+1]); 
 				//ice.position.copy(fragment.position);
 				ice.position.x = t1.position.x;
 				ice.position.z = t1.position.z + i*0.1;
 				ice.position.y=1.75;
 				console.log(ice.position);
-				scene.add(fragment,ice);
+				icstnd.add(fragment,ice);
 			}
+			icstnd.position.z-=0.2;
+			scene.add(icstnd);
 			
-			
-			//var ice2 = ice_cream('#ff00ff', '#ffa400', t1.position.x,t1.position.y+0.5,t1.position.z+1); //портокал и ягода
-			//scene.add(ice, ice2)
-
 			//създаване на втори обект - работи!!
 			/*
 			var drawer2 = drawer.clone();
@@ -493,9 +515,10 @@
 
 			function ice_cream(flavor1, flavor2){
 			var icecream = new THREE.Group();
-			//scene.add(icecream);
+			var texture = new THREE.TextureLoader().load("https://t3.ftcdn.net/jpg/05/92/95/74/360_F_592957440_y9XAvwHBIa1YXJEtfdo3jEE58TA2JS6w.jpg")
+			//използвано от примера, надявам се е позволено
 			var cone = new THREE.Mesh(new THREE.CylinderGeometry( 0.1, 0, 0.5, 32, 1),
-			new THREE.MeshBasicMaterial( {color: '#e8c44f'} ));
+			new THREE.MeshLambertMaterial( {map: texture} ));
 			
 			var ball = new THREE.Mesh(new THREE.SphereGeometry( 0.093, 32, 64,0,2*Math.PI,Math.PI*1.5,Math.PI),
 			new THREE.MeshPhongMaterial( {color: flavor1} ));
@@ -630,7 +653,10 @@
 					return csg.toMesh(csg.subtract([out, inn]));
 					//scene.add(out);
 			}
-			//setTimeout(() => location.reload(), 3000);
+
+			//екстра светлина за масата
+
+			
 			
 		</script>
 		
