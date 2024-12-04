@@ -314,6 +314,14 @@
 			carp.position.y = 0;
 			carp.position.z -= 2.3;
 			scene.add(carp);
+
+			var platform = new THREE.Mesh(new THREE.CylinderGeometry(0.5 ,0.5,0.4,32),
+			new THREE.MeshPhongMaterial(( {color: 'lightgray'} )));
+			platform.position.copy(pom1.position);
+			//platform.position.x-=5;
+			platform.position.y = 0.3;
+			platform.position.z += 1.6;
+			scene.add(platform);
 			//ice cream		
 			
 			//bed
@@ -450,7 +458,7 @@
 			
 			var icstnd = new THREE.Group();
 			var iccolors = ['#bf8bff', '#adebb3','#ff00ff', '#ffa400','#fe5bac',
-			'#ff69b4','#6b3e26','#ffcb85','	#ffc0cb', '#99705b'];
+			'#ff69b4','#6b3e26','#ffcb85','#ffffff', '#99705b'];
 
 			//вкус виолетка и вкус мента
 			//ягода и портокал
@@ -467,20 +475,18 @@
 				ice.position.x = t1.position.x;
 				ice.position.z = t1.position.z + i*0.1;
 				ice.position.y=1.75;
-				console.log(ice.position);
 				icstnd.add(fragment,ice);
 			}
 			icstnd.position.z-=0.2;
 			scene.add(icstnd);
 			
 			//създаване на втори обект - работи!!
-			/*
-			var drawer2 = drawer.clone();
-			drawer2.position.y-=0.7;
-			var adbase = cuthole(dbase,drawer2);
 			
-			stand.add(adbase);
-			*/
+			var bigicecream = ice_cream('#adebb3','#fe5bac');
+			bigicecream.scale.set(7,7,7);
+			bigicecream.position.copy(pom1.position);
+			bigicecream.position.z+=1.6;
+			scene.add(bigicecream);
 			
 			var telefon =telephone(dbase.position.x,dbase.position.y+0.4,dbase.position.z);
 			telefon.rotateY(-Math.PI/2);
@@ -515,10 +521,12 @@
 
 			function ice_cream(flavor1, flavor2){
 			var icecream = new THREE.Group();
-			var texture = new THREE.TextureLoader().load("https://t3.ftcdn.net/jpg/05/92/95/74/360_F_592957440_y9XAvwHBIa1YXJEtfdo3jEE58TA2JS6w.jpg")
-			//използвано от примера, надявам се е позволено
+			
 			var cone = new THREE.Mesh(new THREE.CylinderGeometry( 0.1, 0, 0.5, 32, 1),
-			new THREE.MeshLambertMaterial( {map: texture} ));
+			new THREE.MeshBasicMaterial( {color: '#bd9881'} ));
+
+			var cone2 = new THREE.Mesh(new THREE.CylinderGeometry( 0.1009, 0, 0.499, 32, 16),
+			new THREE.MeshBasicMaterial( {color: '#a97a5b'} ));
 			
 			var ball = new THREE.Mesh(new THREE.SphereGeometry( 0.093, 32, 64,0,2*Math.PI,Math.PI*1.5,Math.PI),
 			new THREE.MeshPhongMaterial( {color: flavor1} ));
@@ -531,7 +539,7 @@
 			ball2.position.copy(ball.position);
 			ball2.position.y+=0.07;
 
-			icecream.add(cone,ball,ball2);
+			icecream.add(cone,cone2,ball,ball2);
 			icecream.scale.set(0.3,0.3,0.3);
 			//icecream.position.set(x,y,z);
 			return icecream;
@@ -545,7 +553,7 @@
 								
 				//Materials
 				
-				var mat =new THREE.MeshStandardMaterial(( {color: '#ff0099'} ));
+				var mat =new THREE.MeshStandardMaterial(( {color: '#f987c5'} ));
 				var matt =new THREE.MeshStandardMaterial(( {color: '#ffff00'} ));
 				var mat2 =new THREE.MeshStandardMaterial(( {color: '#ffffff'} ));
 				
@@ -617,7 +625,17 @@
 				diale.position.y-=0.05;
 				diale.rotation.x = Math.PI*1.9;
 
-				phone.add(diale,s);
+				var corde = cord();
+				corde.material = mat;
+				corde.scale.set(0.2,0.2,0.2);
+				corde.position.copy(p1.position);
+				corde.position.y+=1;
+				corde.position.x-=1;
+				corde.rotation.z = Math.PI/2;
+				corde.rotation.x = -Math.PI/6;
+
+
+				phone.add(diale,s,corde);
 				phone.position.set(x,y,z);
 				return phone;
 				
@@ -647,15 +665,31 @@
 				dial.rotation.z = -Math.PI/6;
 				return dial;
 		}
+
+		function cord(){
+			class MyCurve extends THREE.Curve
+			{
+				getPoint( t )
+				{
+					var r = 3+Math.cos(30*Math.PI*t);
+					var z = Math.sin(30*Math.PI*t);
+					var x = r*Math.cos(1*Math.PI*t);
+					var y = r*Math.sin(1*Math.PI*t);
+					
+					return new THREE.Vector3( x, y, z );
+				}
+			}
+			var geometry = new THREE.TubeGeometry( new MyCurve(), 360, 0.4, 16, true );
+			var material = new THREE.MeshPhongMaterial();
+			var corda = new THREE.Mesh( geometry, material );
+			return corda;
+		}
 			//функция за дупките 
 			function cuthole(out, inn){
 					var csg = new CSG();
 					return csg.toMesh(csg.subtract([out, inn]));
 					//scene.add(out);
 			}
-
-			//екстра светлина за масата
-
 			
 			
 		</script>

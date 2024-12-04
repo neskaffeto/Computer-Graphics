@@ -46,9 +46,82 @@
 			// 6. горд съм как коментарите са равно дълги
 
 			//ne znam
-					var t = telephone(3,1,3);
+					//var t = telephone(3,1,3);
 					//var d = dial(2,2,2);
 					//scene.add(d);
+				var ic = ice_cream('crimson','cornflowerblue');
+				ic.position.set(2,2,2);
+				//scene.add(ic);
+
+
+					// Създаваме клас MyCurve, който ще дефинира кривата
+			// на реотана. Функцията getPoint изчислява точка от кривата.
+			class MyCurve extends THREE.Curve
+			{
+				getPoint( t )
+				{
+					/*
+					var r = 3+Math.cos(30*Math.PI*t);
+					var z = Math.sin(30*Math.PI*t);
+					var x = r*Math.cos(2*Math.PI*t);
+					var y = r*Math.sin(2*Math.PI*t);
+					*/
+					var r = 3+Math.cos(30*Math.PI*t);
+					var z = Math.sin(30*Math.PI*t);
+					var x = r*Math.cos(1*Math.PI*t);
+					var y = r*Math.sin(1*Math.PI*t);
+					return new THREE.Vector3( x, y, z );
+				}
+			}
+
+			// Създаваме тръбовидна форма, използвайки инстанция на
+			// нашата крива MyCurve. По дължина я делим я на 360 части
+			// (всяка част е 1 градус), диаметъра на тръбата е 0.4,
+			// сечение създавано с 16-фрагмента и накрая true означава,
+			// че кривата е затворена.
+			var geometry = new THREE.TubeGeometry( new MyCurve(), 360, 0.1, 8 );
+			var material = new THREE.MeshPhongMaterial();
+			var surface = new THREE.Mesh( geometry, material );
+			surface.scale.set(0.5, 0.5,0.5);
+			surface.position.y+=3;
+
+			var cord2 = surface.clone();
+			cord2.rotateZ(Math.PI/2);
+			cord2.rotateX(Math.PI);
+			scene.add( surface,cord2 );
+
+
+
+
+
+
+
+
+					function ice_cream(flavor1, flavor2){
+			var icecream = new THREE.Group();
+			
+			var cone = new THREE.Mesh(new THREE.CylinderGeometry( 0.1, 0, 0.5, 32, 1),
+			new THREE.MeshBasicMaterial( {color: '#bd9881'} ));
+
+			var cone2 = new THREE.Mesh(new THREE.CylinderGeometry( 0.1001, 0, 0.4999, 32, 16),
+			new THREE.MeshBasicMaterial( {color: '#a97a5b'} ));
+			
+			var ball = new THREE.Mesh(new THREE.SphereGeometry( 0.093, 32, 64,0,2*Math.PI,Math.PI*1.5,Math.PI),
+			new THREE.MeshPhongMaterial( {color: flavor1} ));
+			
+			ball.position.copy(cone.position);
+			ball.position.y+=0.24;
+			var ball2 = new THREE.Mesh(new THREE.SphereGeometry( 0.07, 32, 100,0,2*Math.PI,Math.PI*1.53,Math.PI),
+			new THREE.MeshPhongMaterial( {color: flavor2} ));
+			
+			ball2.position.copy(ball.position);
+			ball2.position.y+=0.07;
+
+			icecream.add(cone,cone2,ball,ball2);
+			icecream.scale.set(5,5,5);
+			//icecream.position.set(x,y,z);
+			return icecream;
+			}
 					function old_telephone(x,y,z){
 				
 				var phone = new THREE.Group();
