@@ -1,6 +1,6 @@
 ﻿<!DOCTYPE html>
 
-<!-- Име Фамилиев, група X, ф.н. XXXXX -->
+<!-- Ванеса Костадинова, група 5, ф.н. 1MI0800443 -->
 
 <html>
 	<head>
@@ -117,7 +117,8 @@
 			var geometryinside= new THREE.BoxGeometry( 5, 5, 0.2);
 			var pom1 = new THREE.Mesh( geometryinside, material );
 				pom1.position.set(  1.4, 1.5, -4.1 );
-			
+				pom1.receiveShadow = true;
+				pom1.castShadow = true;
 			scene.add( pom1 );
 			
 			var pom2 = pom1.clone();
@@ -133,19 +134,27 @@
 			
 			var s1 = new THREE.Mesh(new THREE.BoxGeometry(0.2,5,2), material);
 				s1.position.set(-1,1.5,0);
+				s1.receiveShadow = true;
+				s1.castShadow = true;
 			trapez.add(s1);
-				
+				//нагласих стената
 			var s2 = new THREE.Mesh(new THREE.BoxGeometry(0.2,5,2), material);
-				s2.position.set(-0.35,1.5,1.65);
-				s2.rotateY(Math.PI/4);
+				s2.position.set(-0.335,1.5,1.65);
+				s2.rotateY(Math.PI/4.1);
+				s2.receiveShadow = true;
+				s2.castShadow = true;
 			trapez.add(s2);
 			
 			var s3 = new THREE.Mesh(new THREE.BoxGeometry(0.2,5,3.6), material);
-				s3.position.set(0.35,1.5,4.1);
+				s3.position.set(0.33,1.5,4.1);
+				s3.receiveShadow = true;
+				s3.castShadow = true;
 				
 			var banq = new THREE.Mesh( new THREE.BoxGeometry( 0.2, 5, 2.6 ), material );
 				banq.position.set(  4, 1.5, 0.3 );
-			
+
+				banq.receiveShadow = true;
+				banq.castShadow = true;
 			scene.add( banq );
 			
 			var room = pom1.clone();
@@ -176,14 +185,13 @@
 			w2.position.x+=6;
 			csg.subtract([stena7,w1,w2]);
 			stena7 = csg.toMesh();
-			
+
+			stena7.receiveShadow = true;
+			stena7.castShadow = true;
 			scene.add(stena7);
-			/*
-			var wind_banq = new THREE.Mesh(new THREE.BoxGeometry(1,0.4,0.4),doormaterial);
-			wind_banq.position.copy(stena8.position);
-			wind_banq.position.z *=-0.2; wind_banq.position.y*=2.2;
-			stena8 = cuthole(stena8, wind_banq);
-			*/
+
+			stena8.receiveShadow = true;
+			stena8.castShadow = true;
 			scene.add(stena8);
 			
 			var w3 = window.clone();
@@ -204,6 +212,9 @@
 			
 			var csg = new CSG();
 			stena2 = csg.toMesh(csg.subtract([stena2, w4,w5]));
+
+			stena2.receiveShadow = true;
+				stena2.castShadow = true;
 			scene.add(stena2);
 			
 			var w6 = window.clone();
@@ -211,12 +222,17 @@
 			w6.position.copy(stena4.position);
 			w6.position.y+=1;
 			stena4 = cuthole(stena4,w6);
+			stena4.receiveShadow = true;
+			stena4.castShadow = true;
 			scene.add(stena4);
 			
 			var w7 = window.clone();
 			w7.position.copy(stena6.position);
 			w7.position.y+=1;
 			stena6 = cuthole(stena6, w7);
+
+			stena6.receiveShadow = true;
+			stena6.castShadow = true;
 			scene.add(stena6);
 			
 		//прозорци
@@ -239,6 +255,8 @@
 			as(door);
 			var csg = new CSG();			
 			room = csg.toMesh(csg.subtract([room, door]));
+			room.receiveShadow = true;
+				room.castShadow = true;
 			scene.add(room);
 			
 			var entrance = door.clone();
@@ -246,6 +264,9 @@
 			var csg = new CSG();
 			
 			stena3 = csg.toMesh(csg.subtract([stena3, entrance]));
+
+			stena3.receiveShadow = true;
+				stena3.castShadow = true;
 			scene.add(stena3);
 			
 			var pom2door = door.clone();
@@ -253,6 +274,9 @@
 			as(pom2door);
 			var csg = new CSG();
 			pom2 = csg.toMesh(csg.subtract([pom2, pom2door]));
+
+			pom2.receiveShadow = true;
+				pom2.castShadow = true;
 			scene.add(pom2);
 			
 			var vest1 = door.clone();
@@ -265,6 +289,8 @@
 			
 			var csg = new CSG();
 			vestib = csg.toMesh(csg.subtract([vestib, vest1,vest2]));
+			vestib.receiveShadow = true;
+				vestib.castShadow = true;
 			scene.add(vestib);
 			
 			var cordoor = door.clone();
@@ -272,6 +298,8 @@
 			as(cordoor);
 			var csg = new CSG();
 			cor = csg.toMesh(csg.subtract([cor, cordoor]));
+			cor.receiveShadow = true;
+				cor.castShadow = true;
 			scene.add(cor);
 			
 			var sdoor = door.clone();
@@ -285,7 +313,8 @@
 			entrdoor.position.copy(entrance.position);
 			entrdoor.scale.z = 0.2;
 			entrdoor.position.z +=0.2;
-			
+			entrdoor.receiveShadow = true;
+				entrdoor.castShadow = true;
 			scene.add(entrdoor);
 			
 		//мебели
@@ -294,28 +323,28 @@
 			var carpet = new THREE.Mesh(new THREE.BoxGeometry(1,0.15,5),
 			new THREE.MeshPhongMaterial(( {color: '#ff00a9'} )));
 			carpet.position.set(-2.5,0,-4.4);
-			shadow(carpet);
+			carpet.receiveShadow = true;
+			carpet.castShadow = true;
 			scene.add(carpet);
 
 			
 			//carpet 2
 			
 			var kilim = new THREE.Group();
-			scene.add(kilim);
 			var colors = ['#ff46a2' , '#de92b8', '#d64c99']
 			for(var i=0;i<3;i++){
-			var carpet = new THREE.Mesh(new THREE.CylinderGeometry(1.5 - i*0.4,1.5-i*0.3,0.1+i*0.01,32),
-			new THREE.MeshPhongMaterial(( {color: colors[i]} )));
-			carpet.position.set(5,0,4);
-			kilim.add(carpet);
+				var carpet = new THREE.Mesh(new THREE.CylinderGeometry(1.5 - i*0.4,1.5-i*0.3,0.1+i*0.01,32),
+				new THREE.MeshPhongMaterial(( {color: colors[i]} )));
+				carpet.position.set(5,0,4);
+				kilim.add(carpet);
 			}
+			scene.add(kilim);
 			
 			var carp = kilim.clone();
 			carp.position.copy(pom1.position);
 			carp.position.x-=5;
 			carp.position.y = 0;
 			carp.position.z -= 2.3;
-			shadow(carp);
 			scene.add(carp);
 
 			var platform = new THREE.Mesh(new THREE.CylinderGeometry(0.5 ,0.5,0.4,32),
@@ -324,17 +353,17 @@
 			//platform.position.x-=5;
 			platform.position.y = 0.3;
 			platform.position.z += 1.6;
-			shadow(platform);
+			platform.receiveShadow = true;
+			platform.castShadow = true;
 			scene.add(platform);
 			//ice cream		
 			
 			//bed
 			var bed = new THREE.Group();
-			scene.add(bed);
 			
 			var base = new THREE.Mesh(new THREE.BoxGeometry( 4, 0.6, 2),
 			new THREE.MeshStandardMaterial(( {color: '#e8c44f'} )));
-			
+			shadow(base);
 			var mattress = base.clone();
 			mattress.material = new THREE.MeshStandardMaterial( {color: '#ffffff'} );
 			mattress.scale.set(0.9,1.1,0.9);
@@ -351,8 +380,8 @@
 					new THREE.MeshStandardMaterial(( {color: '#a64c79'} )));
 					sq.position.y = blanket.position.y +0.259;
 					if ((i + j) % 2 === 0) {
-					sq.position.x = blanket.position.x -1.5 + j * 0.2 ;
-					sq.position.z = blanket.position.z - 0.8  +  i * 0.2 ;
+						sq.position.x = blanket.position.x -1.5 + j * 0.2 ;
+						sq.position.z = blanket.position.z - 0.8  +  i * 0.2 ;
 					};
 					bed.add(sq);
 				}
@@ -361,24 +390,25 @@
 			new THREE.MeshStandardMaterial(( {color: '#ff46a2'} )));
 			pillow.position.y += 0.5;
 			pillow.position.x += 1.6;
+			shadow(pillow);
 			
 			var frame = new THREE.Mesh(new THREE.BoxGeometry( 0.2, 2, 2),
 			new THREE.MeshStandardMaterial(( {color: '#e8c44f'} )));
 			frame.position.x += 2;
+			shadow(frame);
 			bed.add(base,mattress, blanket,pillow,frame);
-			shadow(bed);
+			
 			bed.position.set(6.7,0.5,4);
+			scene.add(bed);
 			
 			
 			//ще се гръмна
 			
-			//phone
 			
 			
 			//nightstand
 			
 			var stand = new THREE.Group();
-			shadow(stand);
 			scene.add(stand);
 			var mat = new THREE.MeshPhongMaterial({color:'#e8c44f'});
 			
@@ -387,28 +417,29 @@
 			dbase.position.copy(bed.position);
 			dbase.position.z -= 1.6;
 			dbase.position.x += 1.6;
+			shadow(dbase);
 			stand.add(dbase);
 			
 			var drawer = new THREE.Mesh(new THREE.BoxGeometry(0.2,0.3,0.7),
 			new THREE.MeshBasicMaterial({color:'#c8a42f'}));
 			drawer.position.set(dbase.position.x-0.31,dbase.position.y+0.18,dbase.position.z);
 			stand.add(drawer);
-
+			
 			var knob = new THREE.Mesh(new THREE.SphereGeometry( 0.05, 32, 64),
 			new THREE.MeshPhongMaterial( {color: 0xe8c44f} ));
 			knob.position.copy(drawer.position);
 			knob.position.x-=0.14;
+			shadow(knob);
 			stand.add(knob);
 			
-
+			
 			//table
 			
 			var tablemat = new THREE.MeshPhongMaterial({color:'#f2b9c8'});
 			var table = new THREE.Group();
-			shadow(table);
-			scene.add(table)
 			var t1 = new THREE.Mesh(new THREE.BoxGeometry(2,0.2,1.7),
 			tablemat);
+			shadow(t1);
 			t1.position.set(-2.6,1.5,3);
 			table.add(t1);
 			
@@ -417,10 +448,11 @@
 			t2.position.copy(t1.position);
 			t2.position.z-=0.8;
 			t2.rotation.y=Math.PI/2;
-			
+			shadow(t2);
 			var t3 = t2.clone();
 			t3.rotation.y=-Math.PI/2;
 			t3.position.z+=1.6;
+			shadow(t3);
 			table.add(t2,t3);
 			
 			var leg1 = new THREE.Mesh(new THREE.BoxGeometry(0.2,1.5,0.2),
@@ -428,17 +460,24 @@
 			leg1.position.copy(t2.position);
 			leg1.position.x-=0.8;
 			leg1.position.y-=0.7;
-
+			
 			var leg2 = leg1.clone();
 			leg2.position.set(t2.position.x+0.8,leg1.position.y,leg1.position.z);
 			
 			var leg3 = leg1.clone();
 			leg3.position.set(leg1.position.x,leg1.position.y,t3.position.z);
 			
-
+			
 			var leg4 = leg1.clone();
 			leg4.position.set(leg2.position.x,leg2.position.y,t3.position.z);
+			
+			shadow(leg1);
+			shadow(leg2);
+			shadow(leg3);
+			shadow(leg4);
 			table.add(leg1,leg2,leg3,leg4);
+			scene.add(table);
+			
 			//покривка
 			
 			var pokrivka = new THREE.Mesh(new THREE.BoxGeometry(1.5,0.02,1.5),
@@ -446,11 +485,13 @@
 			pokrivka.position.copy(t1.position);
 			pokrivka.position.y+=0.15;
 			pokrivka.rotation.y = Math.PI/4;
+			shadow(pokrivka);
 			scene.add(pokrivka);
 			var pokrivka2 = new THREE.Mesh(new THREE.BoxGeometry(1,0.1,3.2),
 			new THREE.MeshStandardMaterial({color: '#f64a8a'} ));
 			pokrivka2.position.copy(t1.position);
 			pokrivka2.position.y+=0.09;
+			shadow(pokrivka2);
 			scene.add(pokrivka2);
 			//поставка за сладоледи
 			var icestand = new THREE.Mesh(new THREE.BoxGeometry(0.3,0.1,0.1),
@@ -465,25 +506,30 @@
 			var icstnd = new THREE.Group();
 			var iccolors = ['#bf8bff', '#adebb3','#ff00ff', '#ffa400','#fe5bac',
 			'#ff69b4','#6b3e26','#ffcb85','#ffffff', '#99705b'];
-
+			
 			//вкус виолетка и вкус мента
 			//ягода и портокал
 			//малиново сорбе и дъвка
 			//шоколад и лимон
 			//ванилия и кафе
-
+			
 			
 			for(var i=0;i<5;i++){
 				var fragment = icestand.clone();
+				fragment.position.y+=0.01
 				fragment.position.z += i*0.1;
 				var ice = ice_cream(iccolors[i*2],iccolors[i*2+1]); 
 				//ice.position.copy(fragment.position);
 				ice.position.x = t1.position.x;
 				ice.position.z = t1.position.z + i*0.1;
 				ice.position.y=1.75;
+
+				shadow(fragment);
 				icstnd.add(fragment,ice);
 			}
 			icstnd.position.z-=0.2;
+			icstnd.receiveShadow = true;
+			icstnd.castShadow = true;
 			scene.add(icstnd);
 			
 			//създаване на втори обект - работи!!
@@ -494,6 +540,8 @@
 			bigicecream.position.z+=1.6;
 			scene.add(bigicecream);
 			
+			//phone
+
 			var telefon =telephone(dbase.position.x,dbase.position.y+0.4,dbase.position.z);
 			telefon.rotateY(-Math.PI/2);
 			scene.add(telefon);
@@ -544,10 +592,11 @@
 			
 			ball2.position.copy(ball.position);
 			ball2.position.y+=0.07;
-
+				shadow(cone);
+				shadow(ball);
+				shadow(ball2);
 			icecream.add(cone,cone2,ball,ball2);
 			icecream.scale.set(0.3,0.3,0.3);
-			shadow(icecream);
 			//icecream.position.set(x,y,z);
 			return icecream;
 			}
@@ -568,27 +617,25 @@
 				
 				var base = new THREE.Mesh(new THREE.BoxGeometry( 2.1, 1, 2.1), mat);
 				base.position.set(0,0,0);
-				
+				shadow(base);
 				var b2 = new THREE.Mesh(new THREE.CylinderGeometry( 1, 1.5, 1,4 ),mat);
 				b2.position.copy(base.position);
 				b2.position.y= base.position.y+1;
 				b2.rotation.y = Math.PI/4;
-				
+				shadow(b2);
 				var h1 = new THREE.Mesh(new THREE.BoxGeometry( 0.2, 0.5, 0.2),mat);
 				h1.position.set(b2.position.x - 0.2, b2.position.y +0.6, b2.position.z-0.5);
-				
+				shadow(h1);
 				var h2 = h1.clone();
 				h2.position.x+=0.6;
-				
+				shadow(h2);
 				var h11 = new THREE.Mesh(new THREE.BoxGeometry( 0.2, 0.35, 0.2),mat);
 				h11.position.copy(h1.position);
 				h11.position.z+=0.7;
-				console.log(h1.position);
-				console.log(h11.position);
-				
+				shadow(h11);
 				var h22 = h11.clone();
 				h22.position.x = h2.position.x;
-				
+				shadow(h22);
 				phone.add(base,b2,h1,h2,h11,h22);
 				
 				
@@ -602,13 +649,13 @@
 				handle.position.x = (h1.position.x+h2.position.x)/2 - 0.1;
 				handle.position.z = (h1.position.z+h11.position.z)/2;
 				handle.rotation.z = Math.PI/2.7;
-				
+				shadow(handle);
 				
 				var p1 = new THREE.Mesh(new THREE.CapsuleGeometry(0.4,0.15,32,32),mat);
 				p1.position.copy(handle.position);
 				p1.position.x -= 1.1;
 				p1.position.y += 2.6;
-				
+				shadow(p1);
 				
 				
 				var rem = new THREE.Mesh(new THREE.BoxGeometry( 1, 1,2),mat2);
@@ -621,7 +668,7 @@
 				p2.position.x+=2.2;
 				rem.position.x = p2.position.x;
 				p2 = cuthole(p2,rem);
-				
+				shadow(p2);
 				s.add(handle,p1,p2);
 				s.position.y-=0.1;
 
@@ -640,7 +687,6 @@
 				corde.position.x-=1;
 				corde.rotation.z = Math.PI/2;
 				corde.rotation.x = -Math.PI/6;
-
 
 				phone.add(diale,s,corde);
 				phone.position.set(x,y,z);
@@ -668,6 +714,7 @@
 					}
 					else p=newfrag.clone();
 					p.rotation.z = i*Math.PI/6;
+					shadow(p);
 					dial.add(p);
 				}
 				dial.rotation.z = -Math.PI/6;
@@ -690,6 +737,7 @@
 			var geometry = new THREE.TubeGeometry( new MyCurve(), 360, 0.4, 16, true );
 			var material = new THREE.MeshPhongMaterial();
 			var corda = new THREE.Mesh( geometry, material );
+			shadow(corda);
 			return corda;
 		}
 			//функция за дупките 
