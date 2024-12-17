@@ -1,0 +1,374 @@
+<!DOCTYPE html>
+
+<html>
+	<head>
+		<title>Town park model</title>
+		<meta charset="utf-8">
+		
+		<meta name="viewport" content="width=device-width, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0">
+		
+		<script type="importmap">
+		  {
+			"imports": {
+			  "three": "https://cdn.jsdelivr.net/npm/three@0.169.0/build/three.module.js",
+			  "three/addons/": "https://cdn.jsdelivr.net/npm/three@0.169.0/examples/jsm/",
+			  "vax": "https://boytchev.github.io/CourseVAX/lib/vax.js"
+			}
+		  }
+		</script>
+	</head>
+	
+	<body>
+		<script type="module">
+		
+			import * as THREE from "three";
+			import * as VAX from "vax";
+            VAX.initScene(animate, VAX.initParallax, 4);
+
+
+            VAX.ground.geometry = new THREE.BoxGeometry(200, 4, 200);
+            VAX.ground.material = new THREE.MeshPhysicalMaterial({color: 'lightgreen'}); 
+			VAX.camera.position.set( 10, 50, 200);
+           // VAX.camera.position.set( -10, 90, 30);
+			VAX.camera.lookAt( new THREE.Vector3(0,50,0) );
+			
+            VAX.object.geometry =new THREE.CylinderGeometry(2, 2, 50);
+			VAX.object.material = new THREE.MeshLambertMaterial({color: 'white'});
+            
+            VAX.object.position.y+=25;
+
+            var crown  = new THREE.Mesh(new THREE.IcosahedronGeometry(15,1), new THREE.MeshLambertMaterial({color: '#a0eea0'}));
+            crown.position.y+=20;
+            //crown.castShadow = true;
+            VAX.object.add(crown);
+
+            VAX.object.position.x=-15;
+            VAX.object.position.z=60;
+        //obekt durvo
+            var tree = VAX.object.clone();
+            tree.position.set(50,25,5);
+            VAX.scene.add(tree);
+
+            //obekt peika
+
+            //bench
+			
+			var benchmat = new THREE.MeshPhongMaterial({color:'#f2b9c8'});
+			var legmat = new THREE.MeshPhongMaterial({color:'#c0c0c0'});
+            var table = new THREE.Group();
+			var b1 = new THREE.Mesh(new THREE.BoxGeometry(3.33,2,30),
+			benchmat);
+            b1.position.set(-2.6+3*3.6,80,3);
+			VAX.scene.add(b1);
+            
+            var b2 = b1.clone();
+            b2.position.copy(b1.position);
+            b2.position.x-=3.25*3.6;
+            b2.position.y=0;
+            b2.position.z=0;
+            
+            var b3 = b2.clone();
+            b3.position.x-=3.6;
+
+            var b4 = b2.clone();
+            b4.position.x-=2*3.6;
+            b1.add(b2,b3,b4);
+
+			var leg1 = new THREE.Mesh(new THREE.BoxGeometry(2,10,2),
+			legmat);
+			leg1.position.copy(b1.position);
+			leg1.position.x-=9;
+			leg1.position.y-=85;
+            leg1.position.z-=15;
+			
+			var leg2 = leg1.clone();
+			leg2.position.set(b1.position.x-19,leg1.position.y,leg1.position.z);
+			
+			var leg3 = leg1.clone();
+			leg3.position.set(leg1.position.x,leg1.position.y,b1.position.z+10);
+			
+			
+			var leg4 = leg1.clone();
+			leg4.position.set(leg2.position.x,leg2.position.y,b1.position.z+10);
+			
+			b1.add(leg1,leg2,leg3,leg4);
+
+            var obl = new THREE.Mesh(new THREE.BoxGeometry(2,14,2),
+			legmat);
+			obl.position.copy(b1.position);
+			obl.position.x-=8;
+			obl.position.y-=73;
+            obl.position.z-=10;
+
+            var obl2 = new THREE.Mesh(new THREE.BoxGeometry(2,14,2),
+			legmat);
+			obl2.position.copy(obl.position);
+            obl2.position.z+=15;
+
+            var rest = b2.clone();
+            rest.position.copy(obl.position);
+            rest.rotation.z= Math.PI/2;
+            rest.position.y+=2;
+            rest.position.x-=1;
+            rest.position.z+=8;
+            
+            var rest2 = rest.clone();
+            rest2.position.copy(rest.position);
+            rest2.position.y+=4;
+
+            b1.add(obl,obl2,rest,rest2);
+
+            b1.position.set(0,10,30)
+           // b1.castShadow = true;
+			
+           var bench = b1.clone();
+           bench.position.set(-50,10,80);
+            bench.rotation.y = -Math.PI/2;
+           VAX.scene.add(bench);
+
+           //alley
+
+           var pave = new THREE.Mesh(new THREE.BoxGeometry(3.9,3,6),
+           new THREE.MeshPhongMaterial({color:'#d0a1a1'})); 
+
+            for (var i = 0; i < 18; i++) {
+                for (var j = 0; j < 6; j++) {
+
+                    var plochka = pave.clone();
+                    var z = -95 + i * 7 * 0.8;
+                    var x = -65 + Math.sin(i * 0.5) * 10;
+
+                    plochka.position.set(x + j * 4, 2, z);
+                    VAX.scene.add(plochka);
+                }
+            }
+            var path = new THREE.Group();
+           for (var i = 0; i < 11; i++) {
+                for (var j = 0; j < 6; j++) {
+
+                    var plochka = pave.clone();
+                    var z = -95 + i * 7 * 0.8;
+                    var x = -65 + Math.sin(i * 0.5) * 10;
+
+                    plochka.position.set(x + j * 4, 2, z);
+                    path.add(plochka);
+                }
+            }
+            path.position.x = 37;
+            path.position.z = -100;
+            path.rotation.y = Math.PI/1.8;
+            VAX.scene.add(path);
+           
+           //ezero
+           var lake = new THREE.Mesh(new THREE.CylinderGeometry(30,0,2),
+           new THREE.MeshPhongMaterial({color:'#1e90ff'}));
+
+           lake.position.set(-50,2,30)
+            VAX.scene.add(lake);
+
+            //ograda ot plochki okolo ezeroto
+            var radius = 28; 
+            for (var i = 0; i < 25; i++) {
+                for (var j = 0; j < 3; j++) {
+                    var plochka = pave.clone();
+                    plochka.rotation.y = Math.PI;
+                    
+                    var angle = (i / 10) * Math.PI; 
+                    var x = -55+radius * Math.cos(angle) + j * 4; 
+                    var z = 30 + radius * Math.sin(angle); 
+
+                    plochka.position.set(x, 2, z);
+                    VAX.scene.add(plochka);
+                }
+            }
+
+            //katerushka
+
+            var kat = new THREE.Mesh(new THREE.CylinderGeometry(1.5,1.5,30),
+           new THREE.MeshPhongMaterial({color:'#ff0000'}));
+          
+
+           var kat2 = kat.clone();
+           kat2.position.x+=10;
+           kat2.position.y=0;
+           
+           var kat3 = kat.clone();
+           kat3.position.z+=30;
+           kat3.position.y=0;
+
+           var kat4 = kat.clone();
+           kat4.position.x+=10;
+           kat4.position.y=0;
+           kat4.position.z+=30;
+
+           kat.add(kat2,kat3,kat4);
+
+           var stepmesh =new THREE.Mesh(new THREE.CylinderGeometry(0.5,0.5,10),
+           new THREE.MeshPhongMaterial({color:'#ff0000'}));
+           for(var i=0;i<5;i++){
+                var step = stepmesh.clone();
+                step.rotation.z = Math.PI/2;
+                step.position.set(kat.position.x+5,-10+i*5,kat.position.z);
+                kat.add(step);
+           }
+
+           for(var i=0;i<5;i++){
+                var step = stepmesh.clone();
+                step.rotation.z = Math.PI/2;
+                step.position.set(kat3.position.x+5,-10+i*5,kat3.position.z);
+                kat.add(step);
+           }
+            
+
+        class Katerushka extends THREE.Curve {
+            constructor(scaleX, scaleZ) {
+                super();
+                this.scaleX = scaleX;
+                this.scaleZ = scaleZ; 
+            }
+
+            getPoint(t) {
+                var normalizedX = t- 1;
+                var x = normalizedX * this.scaleX;
+                var z = Math.asin(normalizedX) * this.scaleZ;
+                var y = 14.5;
+
+                return new THREE.Vector3(x, y, z);
+            }
+        }
+        var krivakater = new Katerushka(20, 15.3);
+        var krivaGeometry = new THREE.TubeGeometry(krivakater, 100, 1.5, 16, closed);
+        var krivamat = new THREE.MeshPhongMaterial({ color: '#ff0000'});
+
+        // Create the mesh and add it to the scene
+        var kriva = new THREE.Mesh(krivaGeometry, krivamat);
+        kriva.position.z+=31;
+        kriva.rotation.y =-Math.PI/4.5;
+
+        var kriva2 = kriva.clone();
+        kriva.position.x+=10;
+
+
+        kat.add(kriva,kriva2);
+
+        for(var i=0;i<10;i++){
+                var step = stepmesh.clone();
+                step.rotation.z = Math.PI/2;
+                step.position.set(kat3.position.x+2.2+i*0.2,14.5,kat3.position.z-28+i*3);
+                kat.add(step);
+           }
+
+           VAX.scene.add(kat);
+           //ако не е ясно, като тези за маймунски бой
+           //маймунски бой - забавна игра за деца, играе се на такава катерушка
+           kat.position.set(40,20,30);
+
+           var tree3 = VAX.object.clone();
+            tree3.position.set(-70,25,-25);
+            VAX.scene.add(tree3);
+
+           //swing
+
+           var swingside = new THREE.Mesh(new THREE.CylinderGeometry(1.5,1.5,40),
+           new THREE.MeshPhongMaterial({color:'#ffff00'}));
+
+           var sws2 = swingside.clone();
+           sws2.position.z +=40;
+           
+
+           var sws3 = swingside.clone();
+           sws3.rotation.x = Math.PI/2;
+           sws3.position.y +=19;
+           sws3.position.z +=20;
+
+           var swhand =  new THREE.Mesh(new THREE.CylinderGeometry(0.8,0.8,28),
+           new THREE.MeshPhongMaterial({color:'#f1af00'}));
+           swhand.position.y +=5;
+           swhand.position.z +=16;
+
+           var swhand2 = swhand.clone();
+           swhand2.position.z +=11.5;
+
+           var swing1 =  new THREE.Mesh(new THREE.BoxGeometry(8,2,12),
+           new THREE.MeshPhongMaterial({color:'#f1af00'}));
+           swing1.position.x +=1;
+           swing1.position.y -=8;
+           swing1.position.z +=21;
+
+           var swing2 =  new THREE.Mesh(new THREE.BoxGeometry(2,8,12),
+           new THREE.MeshPhongMaterial({color:'#f1af00'}));
+           swing2.position.x +=3;
+           swing2.position.z +=21;
+
+           var swback =  new THREE.Mesh(new THREE.CylinderGeometry(0.8,0.8,5),
+           new THREE.MeshPhongMaterial({color:'#e1af00'}));
+           swback.position.x +=3;
+           swback.position.y -=6;
+           swback.position.z +=18;
+
+           var swback2 =  new THREE.Mesh(new THREE.CylinderGeometry(0.8,0.8,5),
+           new THREE.MeshPhongMaterial({color:'#e1af00'}));
+           swback2.position.x +=3;
+           swback2.position.y -=6;
+           swback2.position.z +=25;
+
+           var shand1 =  new THREE.Mesh(new THREE.CylinderGeometry(0.8,0.8,4),
+           new THREE.MeshPhongMaterial({color:'#e1af00'}));
+           shand1.rotation.z = Math.PI/2;
+           shand1.position.y -=2;
+           shand1.position.z +=27;
+
+           var shand2 =  shand1.clone();
+           shand2.rotation.z = Math.PI/2;
+           shand2.position.y -=1;
+           shand2.position.z -=11;
+
+           swingside.add(sws2,sws3,swhand,swhand2,swing1,swing2,swback,swback2,shand1,shand2); 
+
+
+           swingside.position.set(50,20,-60);
+           VAX.scene.add(swingside); 
+
+           var bench3 = bench.clone();
+           bench3.rotation.y = Math.PI/2;
+           bench3.position.set(25,10,-80);
+           VAX.scene.add(bench3);
+
+           var bench4 = bench.clone();
+           bench4.position.set(25,10,10);
+           VAX.scene.add(bench4);
+
+           var tree3 = VAX.object.clone();
+            tree3.position.set(-85,25,-90);
+            VAX.scene.add(tree3);
+
+            var tree3 = VAX.object.clone();
+            tree3.position.set(75,25,80);
+            VAX.scene.add(tree3);
+
+            var tree3 = VAX.object.clone();
+            tree3.position.set(35,25,80);
+            VAX.scene.add(tree3);
+
+            var tree3 = VAX.object.clone();
+            tree3.position.set(0,25,-80);
+            VAX.scene.add(tree3);
+
+            var tree3 = VAX.object.clone();
+            tree3.position.set(60,25,-75);
+            VAX.scene.add(tree3);
+
+            //няма лампи, защото и паркчето до нас няма
+            //хората минават през парка с фенерчето на телефона
+            //и ако са смели - без
+            //ако са още по-смели - със слушалки на максимална сила
+			function animate( t )
+			{
+				VAX.scene.rotation.y = t/2;
+			}
+			
+		</script>
+	</body>
+</html>
+
+
