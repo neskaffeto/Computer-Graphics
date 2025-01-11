@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+
+<html>
+	<head>
+		<title>snqg moje bi</title>
+		<meta charset="utf-8">
+		
+		<meta name="viewport" content="width=device-width, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0">
+		
+		<script type="importmap">
+		  {
+			"imports": {
+			  "three": "https://cdn.jsdelivr.net/npm/three@0.169.0/build/three.module.js",
+			  "three/addons/": "https://cdn.jsdelivr.net/npm/three@0.169.0/examples/jsm/",
+			  "vax": "https://boytchev.github.io/CourseVAX/lib/vax.js"
+			}
+		  }
+		</script>
+	</head>
+	
+	<body>
+		<script type="module">
+		
+			import * as THREE from "three";
+			import {OrbitControls} from "three/addons/controls/OrbitControls.js";
+			import * as VAX from "vax";
+
+			VAX.init(animate);
+
+			VAX.camera.fov = 30;
+			VAX.camera.far = 4000;
+			VAX.camera.lookAt(new THREE.Vector3(0, 0, 0));
+			//VAX.onWindowResize(); -- ne raboti
+			VAX.camera.updateProjectionMatrix();
+
+			var controls = new OrbitControls(VAX.camera, VAX.renderer.domElement);
+				controls.enableZoom = false;
+				controls.enablePan = false;
+				controls.enableDamping = true;
+				controls.minPolarAngle = 0.1;
+				controls.maxPolarAngle = Math.PI - 0.1;
+				controls.dampingFactor = 0.1;
+
+			VAX.scene.background = new THREE.CubeTextureLoader().load([
+						'tantolunden5/posx.jpg', 'tantolunden5/negx.jpg',
+						'tantolunden5/posy.jpg', 'tantolunden5/negy.jpg',
+						'tantolunden5/posz.jpg', 'tantolunden5/negz.jpg']);
+			VAX.scene.background.colorSpace = THREE.LinearSRGBColorSpace;
+
+			window.addEventListener( "deviceorientation", deviceOrientation, true);
+
+			function deviceOrientation( event )
+			{
+				var alpha = event.alpha;
+
+				//if( alpha === null ) alert("greshka");
+				
+				var gamma = event.gamma;
+				
+				console.log(alpha);
+				console.log(gamma);
+				//if( gamma === null ) alert("greshka");
+
+				if( gamma >= 0 )
+					gamma = 90 - gamma;
+				else
+				{
+					alpha = alpha + 180;
+					gamma = -90 - gamma;
+				}
+
+				alpha = THREE.MathUtils.degToRad( alpha );
+				gamma = THREE.MathUtils.degToRad( gamma );
+				
+				VAX.camera.rotation.set( gamma, alpha, 0, 'YXZ' );
+			}
+
+			var geometry = new THREE.IcosahedronGeometry(0.5, 0);
+			var material = new THREE.MeshPhysicalMaterial({ roughness: 0, transmission: 1, 
+				thickness: 5, specularIntensity: 0.8, opacity:0});
+
+			var objcount = 300;
+			var icos = [];
+
+			for( var i=0; i<objcount; i++)
+			{
+				
+				var figure = new THREE.Mesh( geometry, material );
+					
+				figure.scale.set( 80, 80, 80 );
+				
+				var f = THREE.MathUtils.randFloat(1000,5000);
+
+				var a = THREE.MathUtils.randFloat(0,2*Math.PI);
+
+				var b = THREE.MathUtils.randFloat(0,2*Math.PI);
+
+				figure.position.setFromSphericalCoords( f, b, a );
+				
+				icos.push( figure );
+				VAX.scene.add( figure );
+			}
+
+				function animate( t ){
+					for( var i=0; i<objcount; i++) {
+						icos[i].rotation.set(Math.sin(t),t+i*50,t);
+				}
+			}
+			
+		</script>	
+	</body>
+</html>
+
+
